@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#171717">
+<title>CLOTHY STORE | Fashion for Everyone</title>
+<style>
+:root{--ink:#171717;--muted:#737373;--cream:#f7f5f0;--accent:#d97757;--line:#e8e5df}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#fff}
+header{background:var(--ink);color:white;padding:18px 5%;display:flex;align-items:center;justify-content:space-between;gap:14px;position:sticky;top:0;z-index:5}
+.brand{font-size:22px;font-weight:900;letter-spacing:1.5px}.tag{font-size:10px;color:#d6d3d1;letter-spacing:2px;margin-top:4px}
+.cart{border:1px solid #666;border-radius:30px;padding:10px 15px;color:white;background:transparent;font-weight:bold;cursor:pointer}
+.hero{background:var(--cream);padding:55px 6%;display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center}
+.eyebrow{color:var(--accent);font-weight:bold;letter-spacing:2px;font-size:12px}.hero h1{font-size:clamp(38px,6vw,68px);line-height:1.02;margin:12px 0}.hero p{color:#57534e;line-height:1.6;max-width:480px}
+.hero-art{min-height:260px;border-radius:18px;background:linear-gradient(135deg,#d6c7b6,#f0e9df 55%,#a99a8a);display:flex;align-items:center;justify-content:center;font-size:76px}
+main{padding:38px 5%}.tools{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0}.tools input,.tools select{padding:12px;border:1px solid var(--line);border-radius:9px;font-size:15px;background:white}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.product{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:white}.photo{height:210px;background:#f1eee9;display:flex;align-items:center;justify-content:center;font-size:60px}.info{padding:15px}.info h3{margin:0 0 8px;font-size:16px}.price{font-weight:bold;font-size:18px}.old{color:#999;text-decoration:line-through;font-size:13px;margin-left:7px}.small{font-size:12px;color:var(--muted);margin:8px 0 12px}
+button.primary{background:var(--ink);color:white;border:0;border-radius:9px;padding:12px 15px;font-weight:bold;cursor:pointer;width:100%}
+.panel{margin-top:25px;padding:20px;background:var(--cream);border-radius:14px}.panel h2{margin-top:0}.cart-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.checkout{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.checkout input,.checkout textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;font:inherit}.checkout textarea{grid-column:1/-1;min-height:75px}
+footer{background:var(--ink);color:#eee;text-align:center;padding:28px 15px;margin-top:45px}footer p{color:#bbb;font-size:13px}
+.notice{font-size:12px;color:#666;line-height:1.5;margin-top:12px}
+@media(max-width:700px){.hero{grid-template-columns:1fr;padding:38px 6%}.hero-art{min-height:180px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.photo{height:150px;font-size:48px}.info{padding:11px}.info h3{font-size:14px}.checkout{grid-template-columns:1fr}.checkout textarea{grid-column:auto}}
+@media(max-width:390px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div><div class="brand">CLOTHY STORE</div><div class="tag">YOUR STYLE, YOUR CHOICE</div></div><button class="cart" onclick="document.getElementById('cart').scrollIntoView({behavior:'smooth'})">🛍 Cart <span id="count">0</span></button></header>
+<section class="hero"><div><div class="eyebrow">NEW SEASON · NEW STYLE</div><h1>Find your<br>everyday look.</h1><p>Discover fashion picks for your wardrobe. Browse the collection and place your order directly on WhatsApp.</p><a href="#shop"><button class="primary" style="width:auto;padding:14px 22px">SHOP COLLECTION</button></a></div><div class="hero-art" aria-label="Fashion illustration">👕 👜 👟</div></section>
+<main id="shop"><h2>Shop collection</h2><p style="color:#737373">Sample products are shown below. Replace them with your own Meesho product selections and selling prices before publishing.</p>
+<div class="tools"><input id="search" placeholder="Search products..." oninput="render()"><select id="category" onchange="render()"><option>All categories</option><option>Men</option><option>Women</option><option>Accessories</option></select></div>
+<div class="grid" id="products"></div>
+<section class="panel" id="cart"><h2>Your cart</h2><div id="cartitems">Your cart is empty.</div><h3 id="total">Total: ₹0</h3><div class="checkout"><input id="customer" placeholder="Your name"><input id="phone" placeholder="Phone number"><textarea id="address" placeholder="Delivery address"></textarea></div><button class="primary" onclick="orderWhatsApp()">Place order on WhatsApp</button><p class="notice">Orders are sent to WhatsApp for confirmation. Online payments and COD are not activated automatically; confirm payment and delivery arrangements with the store before accepting orders.</p></section>
+</main>
+<footer><strong>CLOTHY STORE</strong><p>WhatsApp orders: 8957888691</p><p>Fashion that fits your style.</p></footer>
+<script>
+const products=[
+{id:1,name:"Men's Casual Shirt",price:399,category:"Men",emoji:"👔"},
+{id:2,name:"Women's Kurti",price:349,category:"Women",emoji:"👗"},
+{id:3,name:"Stylish T-Shirt",price:249,category:"Men",emoji:"👕"},
+{id:4,name:"Women's Fashion Top",price:299,category:"Women",emoji:"👚"},
+{id:5,name:"Trendy Handbag",price:449,category:"Accessories",emoji:"👜"},
+{id:6,name:"Fashion Sneakers",price:599,category:"Accessories",emoji:"👟"}];
+let cart=[];
+function render(){let q=document.getElementById('search').value.toLowerCase(),c=document.getElementById('category').value;let list=products.filter(p=>(c==="All categories"||p.category===c)&&p.name.toLowerCase().includes(q));document.getElementById('products').innerHTML=list.map(p=>`<article class="product"><div class="photo">${p.emoji}</div><div class="info"><h3>${p.name}</h3><div class="price">₹${p.price}</div><div class="small">${p.category} · Sample listing</div><button class="primary" onclick="add(${p.id})">Add to cart</button></div></article>`).join('')||'<p>No products found.</p>'}
+function add(id){cart.push(id);renderCart()}
+function renderCart(){document.getElementById('count').textContent=cart.length;let el=document.getElementById('cartitems');if(!cart.length){el.textContent='Your cart is empty.'}else{el.innerHTML=cart.map((id,i)=>{let p=products.find(x=>x.id===id);return `<div class="cart-row"><span>${p.name}</span><strong>₹${p.price}</strong></div>`}).join('')}document.getElementById('total').textContent='Total: ₹'+cart.reduce((s,id)=>s+products.find(p=>p.id===id).price,0)}
+function orderWhatsApp(){if(!cart.length){alert('Please add a product first.');return}let name=document.getElementById('customer').value.trim(),phone=document.getElementById('phone').value.trim(),address=document.getElementById('address').value.trim();if(!name||!phone||!address){alert('Please enter your name, phone number and delivery address.');return}let lines=cart.map(id=>{let p=products.find(x=>x.id===id);return `${p.name} - Rs.${p.price}`});let total=cart.reduce((s,id)=>s+products.find(p=>p.id===id).price,0);let msg=`Hello CLOTHY STORE, I want to place an order:%0A${encodeURIComponent(lines.join('\n'))}%0A%0ATotal: Rs.${total}%0AName: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0AAddress: ${encodeURIComponent(address)}%0APlease confirm availability, delivery and payment options.`;window.open('https://wa.me/918957888691?text='+msg,'_blank')}
+render();renderCart();
+</script>
+</body></html>
